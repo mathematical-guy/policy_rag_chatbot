@@ -1,0 +1,40 @@
+Policy RAG Chatbot
+
+A user can ask their queries regarding the Policy. The policies can be of different category like Vehicle, Insurance or Term etc. 
+Write me prompt for Claude to designing production grade RAG architecture handling large number of users are dependent on it and very less chances for mistakes in the architecture and implementation. Planning to host it as demo as well.
+Future scope: 
+ - Allow user to upload the document they want to query
+ - Using ColBert for Reranking document
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+# Role & Mandate
+You are an expert Principal Cloud Infrastructure Architect and Data Systems Engineer. Your objective is to design a robust, high-availability, production-grade infrastructure architecture for a Multi-Category Policy RAG (Retrieval-Augmented Generation) platform. 
+
+The architecture must support concurrent demo users, distinct policy domain isolation (Vehicle, Term, General Insurance), dynamic ad-hoc user document uploads, and a low-latency late-interaction (ColBERT) reranking topology. Design the data ingestion, storage, routing, LLM generation layer and processing mechanics.
+
+# Architectural Requirements to Detail
+
+### 1. The Ad-Hoc Ingestion Pipeline (User Upload Handling)
+* Design a highly parallelized, asynchronous ingestion engine for user-uploaded documents (PDFs).
+* Detail a Layout-Aware Content Decomposition stage (handling policy tables, exclusion matrices, embedded images or metadata).
+* Specify a decoupled processing queue framework (e.g., Celery, RabbitMQ, or Kafka) that isolates standard background jobs from interactive user uploads.
+
+### 2. Multi-Tenant Vector & Storage Topology
+* Define the database layer. Separate high-speed document storage (NoSQL/Object Store) from Vector search indices.
+* Detail the Metadata Routing schema. Explain how to enforce hard data isolation boundaries so a "Vehicle Policy" request never queries "Term Life" vector spaces.
+* Explain the lifetime management (TTL) and dynamic namespaces for temporary user session uploads to avoid index pollution.
+
+### 3. Designing a Retrieval Flow and Reranking strategies
+* Design the precise network and compute architecture for a two-stage retrieval mesh:
+  - Stage 1: High-throughput, low-latency dense vector search (Bi-Encoder) to narrow down candidates.
+  - Stage 2: Token-level late interaction reranking (ColBERT) deployed as a scalable GPU/CPU inference microservice.
+* Detail how the scores are normalized, merged, and how payload assembly is throttled to prevent resource exhaustion.
+
+### 4. Edge-Case Mitigation & Production Resilience
+* Provide explicit strategies for dealing with out-of-order text extraction from multi-column PDFs.
+* Detail the system behavior when concurrent spikes occur during a live public demo.
+* Detail cache management strategies for frequently hit policy segments to avoid redundant database trips.
+
+# Output Format
+Deliver a comprehensive system design specification document. Structure it with clean Markdown, clear block diagrams (using ASCII or Mermaid syntax), and exhaustive database schema/pipeline definitions. Focus entirely on latency budgets, computational efficiency, and data consistency. With tools and technologies to be used. Consider uv for python dependency management and give a free deployable solution as addition.
